@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Intent</string>
+    <string-array name="image_format">
+    <item>png</item>
+    <item>jpg</item>
+    <item>jpeg</item>
+    <item>gif</item>
+</string-array>
 </resources>

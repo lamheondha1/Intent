@@ -1,40 +1,35 @@
 package com.framgia.lam.intent;
 
 import android.Manifest;
-import android.app.Activity;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
+import com.framgia.lam.intent.utils.LoadingFile;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private static final int COUNT =2;
     private static final int REQUEST =1;
-    private RecyclerView mRclAnh;
-    private AnhAdapter mAdapter;
-    private ArrayList<String> mListAnh;
+    private RecyclerView mRclImage;
+    private ImageAdapter mAdapter;
+    private ArrayList<String> mListImage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mRclAnh = findViewById(R.id.rcl_anh);
-        mListAnh = new ArrayList<>();
-        mAdapter = new AnhAdapter(this,mListAnh,getLayoutInflater());
+        mRclImage = findViewById(R.id.rcl_anh);
+        mListImage= new ArrayList<>();
+        mAdapter = new ImageAdapter(this,mListImage,getLayoutInflater());
         GridLayoutManager manager = new GridLayoutManager(this,COUNT);
-        mRclAnh.setLayoutManager(manager);
-        mRclAnh.setAdapter(mAdapter);
+        mRclImage.setLayoutManager(manager);
+        mRclImage.setAdapter(mAdapter);
         initPermission();
 
     }
@@ -68,8 +63,8 @@ public class MainActivity extends AppCompatActivity {
         File imageDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         String[] format = getResources().getStringArray(R.array.image_format);
         if(imageDirectory != null) {
-            mListAnh = LoadFile.loadImageFileName(imageDirectory,format);
-            mAdapter.setListAnh(mListAnh);
+            mListImage = LoadingFile.loadImageFileName(imageDirectory,format);
+            mAdapter.setmListImage(mListImage);
             mAdapter.notifyDataSetChanged();
         }
     }

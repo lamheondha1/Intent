@@ -1,4 +1,4 @@
-package com.framgia.lam.intent;
+package com.framgia.lam.intent.utils;
 
 import android.util.Log;
 
@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class LoadFile {
+public class LoadingFile {
     public static ArrayList<String> loadImageFileName(File rootDirectory, String[] extensions) {
         ArrayList<String> fileNames = new ArrayList<>();
         List<File> files = Arrays.asList(rootDirectory.listFiles());

@@ -15,14 +15,14 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.util.ArrayList;
 
-public class AnhAdapter extends RecyclerView.Adapter<AnhAdapter.AnhViewHolder> {
-    private ArrayList<String> mListAnh;
+public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHolder> {
+    private ArrayList<String> mListImage;
     private LayoutInflater mInflater;
     private int mImageWidth , mImageHeight;
     private Context mContext;
 
-    public AnhAdapter(Context context, ArrayList<String> listAnh, LayoutInflater inflater) {
-        this.mListAnh = listAnh;
+    public ImageAdapter(Context context, ArrayList<String> listImage, LayoutInflater inflater) {
+        this.mListImage = listImage;
         this.mInflater = inflater;
         this.mContext = context;
         mImageWidth = getImage();
@@ -31,39 +31,40 @@ public class AnhAdapter extends RecyclerView.Adapter<AnhAdapter.AnhViewHolder> {
 
     @NonNull
     @Override
-    public AnhViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new AnhViewHolder(mInflater.from(parent.getContext()).inflate(R.layout.item_anh,parent,false));
+    public ImageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new ImageViewHolder(mInflater.from(parent.getContext()).inflate(R.layout.item_anh,parent,false));
     }
     @Override
-    public void onBindViewHolder(@NonNull AnhViewHolder holder, int position) {
-        String path = mListAnh.get(position);
+    public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
+        String path = mListImage.get(position);
         File file = new File(path);
         Picasso.with(mContext)
                 .load(file)
                 .resize(mImageWidth, mImageHeight)
                 .centerCrop()
-                .into(holder.mIcAnh);
+                .into(holder.mIcImage);
     }
     private int getImage(){
         return (mContext.getResources().getDisplayMetrics().widthPixels)/2;
     }
 
-    public void setListAnh(ArrayList<String> mListAnh) {
-        this.mListAnh = mListAnh;
+    public void setmListImage(ArrayList<String> mListImage) {
+        this.mListImage = mListImage;
     }
 
     @Override
     public int getItemCount() {
-        return mListAnh.size();
+        if (mListImage.size()==0){
+            return 0;
+        }
+        return mListImage.size();
     }
+    class ImageViewHolder extends RecyclerView.ViewHolder{
+        ImageView mIcImage;
 
-
-    class AnhViewHolder extends RecyclerView.ViewHolder{
-        ImageView mIcAnh;
-
-        public AnhViewHolder(@NonNull View itemView) {
+        public ImageViewHolder(@NonNull View itemView) {
             super(itemView);
-            mIcAnh = itemView.findViewById(R.id.ic_anh);
+            mIcImage = itemView.findViewById(R.id.ic_anh);
         }
     }
 }

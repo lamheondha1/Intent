@@ -57,21 +57,21 @@ public class MainActivity extends AppCompatActivity {
                 }
                 requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST);
             } else {
-                createAnh();
+                createImage();
             }
         } else {
-            createAnh();
+            createImage();
         }
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions,int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            createAnh();
+            createImage();
         }
     }
 
-    private ArrayList<String> createAnh(){
+    private ArrayList<String> createImage(){
         File imageDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
         String[] format = getResources().getStringArray(R.array.image_format);
         if(imageDirectory != null) {
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected ImageAdapter doInBackground(Void... images) {
 
-            return new ImageAdapter(MainActivity.this,createAnh(),getLayoutInflater());
+            return new ImageAdapter(MainActivity.this,createImage(),getLayoutInflater());
         }
         @Override
         protected void onPostExecute(ImageAdapter imageAdapter) {

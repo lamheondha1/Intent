@@ -14,14 +14,15 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHolder> {
-    private ArrayList<String> mListImage;
+    private List<String> mListImage;
     private LayoutInflater mInflater;
     private int mImageWidth , mImageHeight;
     private Context mContext;
 
-    public ImageAdapter(Context context, ArrayList<String> listImage, LayoutInflater inflater) {
+    public ImageAdapter(Context context, List<String> listImage, LayoutInflater inflater) {
         this.mListImage = listImage;
         this.mInflater = inflater;
         this.mContext = context;
@@ -49,9 +50,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
     }
     @Override
     public int getItemCount() {
-        if (mListImage.size()==0){
-            return 0;
-        }
         return mListImage.size();
     }
     class ImageViewHolder extends RecyclerView.ViewHolder{

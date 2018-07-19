@@ -47,11 +47,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
     private int getImage(){
         return (mContext.getResources().getDisplayMetrics().widthPixels)/2;
     }
-
-    public void setmListImage(ArrayList<String> mListImage) {
-        this.mListImage = mListImage;
-    }
-
     @Override
     public int getItemCount() {
         if (mListImage.size()==0){

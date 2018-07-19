@@ -2,36 +2,47 @@ package com.framgia.lam.intent;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.media.Image;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Adapter;
 import android.widget.Toast;
 import com.framgia.lam.intent.utils.LoadingFile;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
     private static final int COUNT =2;
     private static final int REQUEST =1;
     private RecyclerView mRclImage;
-    private ImageAdapter mAdapter;
-    private ArrayList<String> mListImage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mRclImage = findViewById(R.id.rcl_anh);
-        mListImage= new ArrayList<>();
-        mAdapter = new ImageAdapter(this,mListImage,getLayoutInflater());
         GridLayoutManager manager = new GridLayoutManager(this,COUNT);
         mRclImage.setLayoutManager(manager);
-        mRclImage.setAdapter(mAdapter);
         initPermission();
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        try {
+            mRclImage.setAdapter(new LoadImage().execute().get());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
     public void initPermission(){
@@ -46,28 +57,42 @@ public class MainActivity extends AppCompatActivity {
                 }
                 requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST);
             } else {
-                CreateAnh();
+                createAnh();
             }
         } else {
-            CreateAnh();
+            createAnh();
         }
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions,int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            CreateAnh();
+            createAnh();
         }
     }
-    private void CreateAnh(){
-        File imageDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+
+    private ArrayList<String> createAnh(){
+        File imageDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
         String[] format = getResources().getStringArray(R.array.image_format);
         if(imageDirectory != null) {
-            mListImage = LoadingFile.loadImageFileName(imageDirectory,format);
-            mAdapter.setmListImage(mListImage);
-            mAdapter.notifyDataSetChanged();
+            return LoadingFile.loadImageFileName(imageDirectory,format);
+        }
+        return new ArrayList<>();
+    }
+
+
+    class LoadImage extends AsyncTask<Void,Void, ImageAdapter>{
+        @Override
+        protected ImageAdapter doInBackground(Void... images) {
+
+            return new ImageAdapter(MainActivity.this,createAnh(),getLayoutInflater());
+        }
+        @Override
+        protected void onPostExecute(ImageAdapter imageAdapter) {
+            super.onPostExecute(imageAdapter);
         }
     }
+
 
 
 }
